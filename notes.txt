@@ -1,0 +1,11 @@
+1. Need to get colors
+2. Need to create probabilities
+3. need to create matrix
+4. Need to figure out import stuff
+5. debug
+6. If it sucks make it use cutouts from old pictures
+7. Need to make readme
+8. Make instructions on how to use
+9. screen recording
+10. folder of examples
+
