@@ -5,21 +5,15 @@ import numpy as np
 from PIL import Image
 # We can add more of these later...keeping it simple for now!
 COLOR_CODES = {
-"COLOR_1": CODE,
-"COLOR_2": CODE,
-"COLOR_3": CODE,
-"COLOR_4": CODE,
-"COLOR_5": CODE,
-"COLOR_6": CODE,
-"COLOR_7": CODE,
-"COLOR_8": CODE,
-"COLOR_9": CODE,
-"COLOR_10": CODE,
-"COLOR_11": CODE,
-"COLOR_12": CODE,
-"COLOR_13": CODE,
-"COLOR_14": CODE,
-"COLOR_15": CODE,
+"COLOR_1": [107, 174, 193],
+"COLOR_2": [30,65,69],
+"COLOR_3": [11,135,182],
+"COLOR_4": [28,46,37    ],
+"COLOR_5": [171,195,197],
+"COLOR_6": [62,99,99],
+"COLOR_7": [91,133,137],
+"COLOR_8": [59,108,127],
+
 }
 HORIZONTAL_PIXELS = 640;
 VERTICAL_PIXELS = 640;
@@ -59,9 +53,15 @@ def write_drawing(self, artwork):
 
 def main():
     Bob_maker = MarkovBobRoss({
-        "A": {"A": 0.3, "B": 0.4, "C": 0.3},
-        "B": {"A": 0.7, "B": 0.2, "C": 0.1},
-        "C": {"A": 0.1, "B": 0.7, "C": 0.2}
+        "COLOR_1": {"COLOR_1": 0.3, "COLOR_2": 0.1, "COLOR_3": 0.2,"COLOR_4": 0.05, "COLOR_5": 0.02, "COLOR_6": 0.1,"COLOR_7": 0.08, "COLOR_8": 0.15},
+        "COLOR_2": {"COLOR_1": 0.06, "COLOR_2": 0.25, "COLOR_3": 0.04,"COLOR_4": 0.2, "COLOR_5": 0.05, "COLOR_6": 0.15,"COLOR_7": 0.1, "COLOR_8": 0.15},
+        "COLOR_3": {"COLOR_1": 0.2, "COLOR_2": 0.1, "COLOR_3": 0.35,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.06,"COLOR_7": 0.06, "COLOR_8": 0.03},
+        "COLOR_4": {"COLOR_1": 0.09, "COLOR_2": 0.25, "COLOR_3": 0.02,"COLOR_4": 0.3, "COLOR_5": 0.02, "COLOR_6": 0.15,"COLOR_7": 0.07, "COLOR_8": 0.1},
+        "COLOR_5": {"COLOR_1": 0.2, "COLOR_2": 0.06, "COLOR_3": 0.15,"COLOR_4": 0.02, "COLOR_5": 0.35, "COLOR_6": 0.05,"COLOR_7": 0.08, "COLOR_8": 0.09},
+        "COLOR_6": {"COLOR_1": 0.5, "COLOR_2": 0.15, "COLOR_3": 0.1,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.004,"COLOR_7": 0.006, "COLOR_8": 0.009},
+        "COLOR_7": {"COLOR_1": 0.5, "COLOR_2": 0.15, "COLOR_3": 0.1,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.004,"COLOR_7": 0.006, "COLOR_8": 0.009},
+        "COLOR_8": {"COLOR_1": 0.5, "COLOR_2": 0.15, "COLOR_3": 0.1,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.004,"COLOR_7": 0.006, "COLOR_8": 0.009},
+
 
 })
 
