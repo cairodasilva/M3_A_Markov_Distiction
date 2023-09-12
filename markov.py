@@ -58,9 +58,9 @@ def main():
         "COLOR_3": {"COLOR_1": 0.2, "COLOR_2": 0.1, "COLOR_3": 0.35,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.06,"COLOR_7": 0.06, "COLOR_8": 0.03},
         "COLOR_4": {"COLOR_1": 0.09, "COLOR_2": 0.25, "COLOR_3": 0.02,"COLOR_4": 0.3, "COLOR_5": 0.02, "COLOR_6": 0.15,"COLOR_7": 0.07, "COLOR_8": 0.1},
         "COLOR_5": {"COLOR_1": 0.2, "COLOR_2": 0.06, "COLOR_3": 0.15,"COLOR_4": 0.02, "COLOR_5": 0.35, "COLOR_6": 0.05,"COLOR_7": 0.08, "COLOR_8": 0.09},
-        "COLOR_6": {"COLOR_1": 0.5, "COLOR_2": 0.15, "COLOR_3": 0.1,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.004,"COLOR_7": 0.006, "COLOR_8": 0.009},
-        "COLOR_7": {"COLOR_1": 0.5, "COLOR_2": 0.15, "COLOR_3": 0.1,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.004,"COLOR_7": 0.006, "COLOR_8": 0.009},
-        "COLOR_8": {"COLOR_1": 0.5, "COLOR_2": 0.15, "COLOR_3": 0.1,"COLOR_4": 0.05, "COLOR_5": 0.15, "COLOR_6": 0.004,"COLOR_7": 0.006, "COLOR_8": 0.009},
+        "COLOR_6": {"COLOR_1": 0.05, "COLOR_2": 0.1, "COLOR_3": 0.06,"COLOR_4": 0.2, "COLOR_5": 0.09, "COLOR_6": 0.2,"COLOR_7": 0.15, "COLOR_8": 0.15},
+        "COLOR_7": {"COLOR_1": 0.04, "COLOR_2": 0.11, "COLOR_3": 0.04,"COLOR_4": 0.1, "COLOR_5": 0.06, "COLOR_6": 0.15,"COLOR_7": 0.3, "COLOR_8": 0.2},
+        "COLOR_8": {"COLOR_1": 0.1, "COLOR_2": 0.1, "COLOR_3": 0.1,"COLOR_4": 0.06, "COLOR_5": 0.1, "COLOR_6": 0.2,"COLOR_7": 0.1, "COLOR_8": 0.24},
 
 
 })
