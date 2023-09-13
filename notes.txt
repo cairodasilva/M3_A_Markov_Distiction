@@ -1,6 +1,6 @@
-1. Need to get colors
-2. Need to create probabilities
-3. need to create matrix
+1. Need to get colors DONE
+2. Need to create probabilities DONE
+3. need to create matrix  DONE
 4. Need to figure out import stuff
 5. debug
 6. If it sucks make it use cutouts from old pictures
