@@ -1,108 +1,82 @@
 
 import numpy as np
-from PIL import Image
+from PIL import Image,ImageDraw
+import os
+import math
 # We can add more of these later...keeping it simple for now!
-IMAGES = {
-"COLOR_1": [107, 174, 193],
-"COLOR_2": [30,65,69],
-"COLOR_3": [11,135,182],
-"COLOR_4": [28,46,37],
-"COLOR_5": [171,195,197],
-"COLOR_6": [62,99,99],
-"COLOR_7": [91,133,137],
-"COLOR_8": [59,108,127],
-
+script_dir = os.path.dirname(os.path.abspath(__file__))
+COLOR_CODES = {
+"COLOR_1": os.path.join(script_dir, "BobRoss/cloud1.png"),
+"COLOR_2": os.path.join(script_dir, "BobRoss/mountain.png"),
+"COLOR_3": os.path.join(script_dir, "BobRoss/sun1.png"),
+"COLOR_4": os.path.join(script_dir, "BobRoss/sun2.png"),
+"COLOR_5": os.path.join(script_dir, "BobRoss/tree1.png"),
+"COLOR_6": os.path.join(script_dir, "BobRoss/tree2.png"),
+"COLOR_7": os.path.join(script_dir, "BobRoss/tree3.png"),
+"COLOR_8": os.path.join(script_dir, "BobRoss/waterfall.png")
 }
-POSITIONS = {
-    "POSITION_1": (0,0),
-    "POSITION_2": (0,0),
-    "POSITION_3": (0,0),
-    "POSITION_4": (0,0),
-    "POSITION_5": (0,0),
-    "POSITION_6": (0,0),
-    "POSITION_7": (0,0),
-    "POSITION_8": (0,0),
-    "POSITION_9": (0,0),
-    "POSITION_10": (0,0),
-    "POSITION_11": (0,0),
-    "POSITION_12": (0,0),
-    "POSITION_13": (0,0),
-    "POSITION_14": (0,0),
-    "POSITION_15": (0,0)
-}
+HORIZONTAL_PIXELS = 1000;
+VERTICAL_PIXELS = 1000;
 
-HORIZONTAL_PIXELS = 25;
-VERTICAL_PIXELS = 25;
 
 class MarkovBobRoss:
 
     def __init__(self, transition_matrix):
 
      self.transition_matrix = transition_matrix
-     self.images = list(transition_matrix.keys())
+     self.colors = list(transition_matrix.keys())
 
-    def get_next_image(self, current_image):
+    def get_next_color(self, current_color):
 
         return np.random.choice(
-        self.images,
-        p=[self.transition_matrix[current_image][next_image] \
-        for next_image in self.images]
+        self.colors,
+        p=[self.transition_matrix[current_color][next_color] \
+        for next_color in self.colors]
     )
+    def get_next_pos(self):
+        x = np.random.randint(0, HORIZONTAL_PIXELS)
+        y = np.random.randint(0, VERTICAL_PIXELS)
+        return (x, y)
+    def compose_collage (self, current_color = "COLOR_1", num_images = 15, current_pos = (0,0)):
+        image_pos = []
+        canvas = Image.new("RGB", (HORIZONTAL_PIXELS, VERTICAL_PIXELS), (171,195,197))
+        image_pos.append((current_color,current_pos))
+        for index in range (num_images-1):
+            next_image = self.get_next_color(current_color)
+            next_pos = self.get_next_pos()
+            current_color= next_image
+            current_pos= next_pos
+            image_pos.append((current_color,current_pos))
+        for image,pos in image_pos:
+            image_path = COLOR_CODES[image]
+            if image_path:
+                image = Image.open(image_path)
+                if image.mode != "RGB":
+                    image = image.convert("RGB")
 
-    def get_next_position(self, current_position):
-        return np.random.choice(list(self.transition_matrix_positions.keys()),
-            p=list(self.transition_matrix_positions[current_position].values())
-        )
-      
-        
-    
+                # Define the color to replace black pixels with (as an RGB tuple)
+                new_color = (171, 191, 197)  # Replace black with red (adjust as needed)
+
+                # Iterate through pixels and replace black with the new color
+                width, height = image.size
+                for x in range(width):
+                    for y in range(height):
+                        r, g, b = image.getpixel((x, y))
+                        if r == 0 and g == 0 and b == 0:  # Check if pixel is black
+                            image.putpixel((x, y), new_color)
+                scale_factor = math.sqrt((HORIZONTAL_PIXELS*VERTICAL_PIXELS)/15)
+                image = image.resize((int(scale_factor), int(scale_factor)))
+                canvas.paste(image, pos)
+            else:
+                print(f"Image path not found for {image}")
 
 
-    def compose_collage(self, current_image="COLOR_1", num_images = 15, current_position = (0,0)):
-        collage = Image.new("RGB", (HORIZONTAL_PIXELS, VERTICAL_PIXELS))
-        for row in range(num_images):
-            next_image = self.get_next_image(current_image)
-            next_position = self.get_next_position(current_position)
-            image = Image.open(next_image)
-            collage.paste(image, next_position)
-
-
-                
-        return collage
-
-
-
-    def write_drawing(self, artwork):
-        """turns  array into painting"""
-        bobbyross = Image.fromarray(artwork, 'RGB')
-        bobbyross.save('bobbyross.png')
-        return bobbyross
-
-    transition_matrix_positions = {}
-    def make_postition_t_matrix(self, current_position):
-        next_positions = []
-        movements = [
-        (-1, 0, 0.1),  # up
-        (1, 0, 0.1),   # down
-        (0, -1, 0.1),  #left
-        (0, 1, 0.2), # right
-        (-2, 0, 0.1), #up option 2
-        (-2, 0, 0.2), # down option 2
-        (0, -2, 0.1), # left option 2
-        (0, 2, 0.1) # right option 2
-        ]
-        for x_transition, y_transition, probability in movements:
-            x , y = current_position
-            newx = x+x_transition
-            newy = y+y_transition
-            if 0 <= newx < HORIZONTAL_PIXELS and 0 <= newy < VERTICAL_PIXELS:
-             next_positions[(newx, newy)] = probability
+        return canvas
             
+    
+   
 
-        #here you need to make sure the probabilites add up to 1
-        #and then if not you need to get the difference and scale it to all of the probs at the moment
-        #then return next_prob array
-        # to make the transitions matrix you need to go to all of the pixels with nested loops and then set the array to what the function would say
+    
 
 def main():
         Bob_maker = MarkovBobRoss({
@@ -118,15 +92,12 @@ def main():
 
     })
 
-        new_art = Bob_maker.compose_art(current_color="COLOR_1", art_length=HORIZONTAL_PIXELS*VERTICAL_PIXELS)
+        new_art = Bob_maker.compose_collage(current_color="COLOR_1", num_images=40, current_pos= (0,0))
         """make the art with current color and length"""
+        new_art.show()
+       
 
-        print("Writing song to file...") 
-        """print something cool here"""
-
-        img = Bob_maker.write_drawing(new_art)
-        img.show()
+        
         print("Process completed!")
 if __name__ == "__main__":
         main()
-
