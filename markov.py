@@ -16,8 +16,8 @@ COLOR_CODES = {
 "COLOR_7": os.path.join(script_dir, "BobRoss/tree3.png"),
 "COLOR_8": os.path.join(script_dir, "BobRoss/waterfall.png")
 }
-HORIZONTAL_PIXELS = 1000;
-VERTICAL_PIXELS = 1000;
+HORIZONTAL_PIXELS = 1500;
+VERTICAL_PIXELS = 1500;
 
 
 class MarkovBobRoss:
@@ -55,15 +55,14 @@ class MarkovBobRoss:
                 if image.mode != "RGB":
                     image = image.convert("RGB")
 
-                # Define the color to replace black pixels with (as an RGB tuple)
-                new_color = (171, 191, 197)  # Replace black with red (adjust as needed)
+                new_color = (171, 191, 197) 
 
-                # Iterate through pixels and replace black with the new color
+               
                 width, height = image.size
                 for x in range(width):
                     for y in range(height):
                         r, g, b = image.getpixel((x, y))
-                        if r == 0 and g == 0 and b == 0:  # Check if pixel is black
+                        if r == 0 and g == 0 and b == 0:  
                             image.putpixel((x, y), new_color)
                 scale_factor = math.sqrt((HORIZONTAL_PIXELS*VERTICAL_PIXELS)/15)
                 image = image.resize((int(scale_factor), int(scale_factor)))
@@ -93,7 +92,7 @@ def main():
 
     })
 
-        new_art = Bob_maker.compose_collage(current_color="COLOR_1", num_images=40, current_pos= (0,0))
+        new_art = Bob_maker.compose_collage(current_color="COLOR_1", num_images=100, current_pos= (0,0))
         """make the art with current color and length"""
         new_art.show()
        
