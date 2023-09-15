@@ -1,24 +1,20 @@
 
-
 import numpy as np
-from PIL import Image,ImageDraw
-import os
-import math
+from PIL import Image
 # We can add more of these later...keeping it simple for now!
-script_dir = os.path.dirname(os.path.abspath(__file__))
 COLOR_CODES = {
-"COLOR_1": os.path.join(script_dir, "BobRoss/cloud1.png"),
-"COLOR_2": os.path.join(script_dir, "BobRoss/mountain.png"),
-"COLOR_3": os.path.join(script_dir, "BobRoss/sun1.png"),
-"COLOR_4": os.path.join(script_dir, "BobRoss/sun2.png"),
-"COLOR_5": os.path.join(script_dir, "BobRoss/tree1.png"),
-"COLOR_6": os.path.join(script_dir, "BobRoss/tree2.png"),
-"COLOR_7": os.path.join(script_dir, "BobRoss/tree3.png"),
-"COLOR_8": os.path.join(script_dir, "BobRoss/waterfall.png")
-}
-HORIZONTAL_PIXELS = 1000;
-VERTICAL_PIXELS = 1000;
+"COLOR_1": [107, 174, 193],
+"COLOR_2": [30,65,69],
+"COLOR_3": [11,135,182],
+"COLOR_4": [28,46,37],
+"COLOR_5": [171,195,197],
+"COLOR_6": [62,99,99],
+"COLOR_7": [91,133,137],
+"COLOR_8": [59,108,127],
 
+}
+HORIZONTAL_PIXELS = 25;
+VERTICAL_PIXELS = 25;
 
 class MarkovBobRoss:
 
@@ -34,50 +30,26 @@ class MarkovBobRoss:
         p=[self.transition_matrix[current_color][next_color] \
         for next_color in self.colors]
     )
-    def get_next_pos(self):
-        x = np.random.randint(0, HORIZONTAL_PIXELS)
-        y = np.random.randint(0, VERTICAL_PIXELS)
-        return (x, y)
-    def compose_collage (self, current_color = "COLOR_1", num_images = 15, current_pos = (0,0)):
-        image_pos = []
-        canvas = Image.new("RGB", (HORIZONTAL_PIXELS, VERTICAL_PIXELS), (171,195,197))
-        image_pos.append((current_color,current_pos))
-        for index in range (num_images-1):
-            next_image = self.get_next_color(current_color)
-            next_pos = self.get_next_pos()
-            current_color= next_image
-            current_pos= next_pos
-            image_pos.append((current_color,current_pos))
-        for image,pos in image_pos:
-            image_path = COLOR_CODES[image]
-            if image_path:
-                image = Image.open(image_path)
-                if image.mode != "RGB":
-                    image = image.convert("RGB")
 
-                # Define the color to replace black pixels with (as an RGB tuple)
-                new_color = (171, 191, 197)  # Replace black with red (adjust as needed)
+    def compose_art(self, current_color="COLOR_1", art_length = HORIZONTAL_PIXELS*VERTICAL_PIXELS):
+        index = 1
+        artwork = np.zeros((HORIZONTAL_PIXELS, VERTICAL_PIXELS, 3), dtype=np.uint8)
+        for row in range(HORIZONTAL_PIXELS):
+            for col in range (VERTICAL_PIXELS):
 
-                # Iterate through pixels and replace black with the new color
-                width, height = image.size
-                for x in range(width):
-                    for y in range(height):
-                        r, g, b = image.getpixel((x, y))
-                        if r == 0 and g == 0 and b == 0:  # Check if pixel is black
-                            image.putpixel((x, y), new_color)
-                scale_factor = math.sqrt((HORIZONTAL_PIXELS*VERTICAL_PIXELS)/15)
-                image = image.resize((int(scale_factor), int(scale_factor)))
-                canvas.paste(image, pos)
-            else:
-                print(f"Image path not found for {image}")
+                next_color = self.get_next_color(current_color)
+                artwork [row, col] = COLOR_CODES[next_color]
+                current_color = next_color
+                index += 1
+        return artwork
 
 
-        return canvas
-            
-    
-   
 
-    
+    def write_drawing(self, artwork):
+        """turns  array into painting"""
+        bobbyross = Image.fromarray(artwork, 'RGB')
+        bobbyross.save('bobbyross.png')
+        return bobbyross
 
 def main():
         Bob_maker = MarkovBobRoss({
@@ -93,15 +65,14 @@ def main():
 
     })
 
-        new_art = Bob_maker.compose_collage(current_color="COLOR_1", num_images=40, current_pos= (0,0))
+        new_art = Bob_maker.compose_art(current_color="COLOR_1", art_length=HORIZONTAL_PIXELS*VERTICAL_PIXELS)
         """make the art with current color and length"""
-        new_art.show()
-       
 
-        
+        print("Writing song to file...") 
+        """print something cool here"""
+
+        img = Bob_maker.write_drawing(new_art)
+        img.show()
         print("Process completed!")
 if __name__ == "__main__":
         main()
-
-
-
