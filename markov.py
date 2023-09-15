@@ -4,20 +4,21 @@ import numpy as np
 from PIL import Image,ImageDraw
 import os
 import math
-# We can add more of these later...keeping it simple for now!
-script_dir = os.path.dirname(os.path.abspath(__file__))
+script_dir = os.path.dirname(os.path.abspath(__file__)) 
+#these are the paths for the images
 COLOR_CODES = {
-"COLOR_1": os.path.join(script_dir, "BobRoss/cloud1.png"),
-"COLOR_2": os.path.join(script_dir, "BobRoss/mountain.png"),
-"COLOR_3": os.path.join(script_dir, "BobRoss/sun1.png"),
-"COLOR_4": os.path.join(script_dir, "BobRoss/sun2.png"),
-"COLOR_5": os.path.join(script_dir, "BobRoss/tree1.png"),
-"COLOR_6": os.path.join(script_dir, "BobRoss/tree2.png"),
-"COLOR_7": os.path.join(script_dir, "BobRoss/tree3.png"),
-"COLOR_8": os.path.join(script_dir, "BobRoss/waterfall.png")
+"COLOR_1": os.path.join(script_dir, "Assets/BobRoss/cloud1.png"),
+"COLOR_2": os.path.join(script_dir, "Assets/BobRoss/mountain.png"),
+"COLOR_3": os.path.join(script_dir, "Assets/BobRoss/sun1.png"),
+"COLOR_4": os.path.join(script_dir, "Assets/BobRoss/sun2.png"),
+"COLOR_5": os.path.join(script_dir, "Assets/BobRoss/tree1.png"),
+"COLOR_6": os.path.join(script_dir, "Assets/BobRoss/tree2.png"),
+"COLOR_7": os.path.join(script_dir, "Assets/BobRoss/tree3.png"),
+"COLOR_8": os.path.join(script_dir, "Assets/BobRoss/waterfall.png")
 }
-HORIZONTAL_PIXELS = 1500;
-VERTICAL_PIXELS = 1500;
+#canvas size
+HORIZONTAL_PIXELS = 1000;
+VERTICAL_PIXELS = 1000;
 
 
 class MarkovBobRoss:
@@ -25,29 +26,33 @@ class MarkovBobRoss:
     def __init__(self, transition_matrix):
 
      self.transition_matrix = transition_matrix
-     self.colors = list(transition_matrix.keys())
+     self.images = list(transition_matrix.keys())
 
-    def get_next_color(self, current_color):
+#gets the next image from a first order markov chain
+    def get_next_image(self, current_image):
 
         return np.random.choice(
-        self.colors,
-        p=[self.transition_matrix[current_color][next_color] \
-        for next_color in self.colors]
+        self.images,
+        p=[self.transition_matrix[current_image][next_image] \
+        for next_image in self.images]
     )
+    #gets a random place for the next position
     def get_next_pos(self):
         x = np.random.randint(0, HORIZONTAL_PIXELS)
         y = np.random.randint(0, VERTICAL_PIXELS)
         return (x, y)
-    def compose_collage (self, current_color = "COLOR_1", num_images = 15, current_pos = (0,0)):
+
+        #adds all of the images it chooses and their postions to a canvas and then turns the black (background) into the background color
+    def compose_collage (self, current_image = "COLOR_1", num_images = 15, current_pos = (0,0)):
         image_pos = []
         canvas = Image.new("RGB", (HORIZONTAL_PIXELS, VERTICAL_PIXELS), (171,195,197))
-        image_pos.append((current_color,current_pos))
+        image_pos.append((current_image,current_pos))
         for index in range (num_images-1):
-            next_image = self.get_next_color(current_color)
+            next_image = self.get_next_image(current_image)
             next_pos = self.get_next_pos()
-            current_color= next_image
+            current_image= next_image
             current_pos= next_pos
-            image_pos.append((current_color,current_pos))
+            image_pos.append((current_image,current_pos))
         for image,pos in image_pos:
             image_path = COLOR_CODES[image]
             if image_path:
@@ -92,8 +97,8 @@ def main():
 
     })
 
-        new_art = Bob_maker.compose_collage(current_color="COLOR_1", num_images=100, current_pos= (0,0))
-        """make the art with current color and length"""
+        new_art = Bob_maker.compose_collage(current_image="COLOR_1", num_images=25, current_pos= (0,0))
+        
         new_art.show()
        
 
